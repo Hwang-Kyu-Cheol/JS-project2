@@ -2,12 +2,15 @@ const selectColors = document.querySelectorAll(".js-color"),
     canvas = document.querySelector("#js-canvas"),
     range = document.querySelector("#js-range"),
     mode = document.querySelector("#js-btnFill");
+    save = document.querySelector("#js-btnSave");
     clear = document.querySelector("#js-btnClear");
     ctx = canvas.getContext("2d");
 
 canvas.width = 400;
 canvas.height = 400;
 
+ctx.fillStyle = "white";
+ctx.fillRect(0, 0, 400, 400);
 ctx.strokeStyle = "#2c2c2c";
 ctx.fillStyle = "#2c2c2c";
 ctx.lineWidth = 2.5;
@@ -100,6 +103,18 @@ function handleClearClick(){
     ctx.clearRect(0, 0, 400, 400);
 }
 
+function onContextMenu(event){
+    event.preventDefault();
+}
+
+function handleSaveClick(){
+    const dataURL = canvas.toDataURL("image/jpeg");
+    const link = document.createElement("a");
+    link.href = dataURL;
+    link.download = "Image by JS";
+    link.click();
+}
+
 function init(){
     selectColors.forEach(function(selectColor){
         selectColor.addEventListener("click", handleClick);
@@ -113,6 +128,7 @@ function init(){
         canvas.addEventListener("mouseup", onMouseUp);
         canvas.addEventListener("mouseleave", onMouseLeave);
         canvas.addEventListener("click", onClick);
+        canvas.addEventListener("contextmenu", onContextMenu);
     }
 
     if(range){
@@ -125,6 +141,10 @@ function init(){
 
     if(clear){
         clear.addEventListener("click", handleClearClick);
+    }
+
+    if(save){
+        save.addEventListener("click", handleSaveClick);
     }
 }
 
